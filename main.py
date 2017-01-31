@@ -5,6 +5,13 @@ class Primers():
     def __init__(self, sequence):
         self.sequence = sequence
 
+        self.primerMinLength = 17
+        self.primerMaxLength = 25
+        self.primerMinMeltTemp = 55
+        self.primerMaxMeltTemp = 60
+        self.primerMinGC = 50
+        self.primerMaxGC = 60
+
     def checkInput(self):
         """ Checks the input sequence.
             Removes every character that's NOT in CATG
@@ -19,7 +26,7 @@ class Primers():
 
 
 """ BELOW FOR TESTING PURPOSES ONLY """
-ask = input('seq? ')
+# ask = input('seq? ')
 sq = "CCCTAAGTTTGATGAGTATAGAAATGGATCC"
 mt = """TTGATGAGTATAGAAATGGATCCACTCGTTATTCTCGGACGAGTGTTCAGTAATGAACCTCTGGAGAGAA
 CCATGTATATGATCGTTATCTGGGTTGGACTTCTGCTTTTAAGCCCAGATAACTGGCCTGAATATGTTAA
@@ -29,8 +36,11 @@ AAAACGATAAAGTGCGATCAGTAATTCAAAACCTTACAGAAGAGCAATCTATGGTTTTGTGCGCAGCCCT
 TAATGAAGGCAGGAAGTATGTGGTTACATCAAAACAATTCCCATACATTAGTGAGTTGATTGAGCTTGGT
 GTGTTGAACAAAACTTTTTCCCGATGGAATGGAAAGCATATATTATTCCCTATTGAGGATATTTACTGGA
 CTGAATTAGTTGCCAGCTATGATCCATATAATATTGAGATAAAGCCAAGGCCAATATCTAAGTAA"""
-_primer = Primers(ask)
+_primer = Primers(sq)
 try:
-    print(_primer.checkInput())
+    # print(_primer.checkInput())
+    print('yo')
 except ValueError as e:
     print(e)
+
+print(_primer.findPrimer(sq))
