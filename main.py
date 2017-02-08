@@ -1,4 +1,6 @@
-import re
+from Bio.Seq import Seq
+from Bio.SeqUtils import GC
+from Bio.Alphabet import IUPAC, _verify_alphabet
 
 
 class Primers():
@@ -12,18 +14,6 @@ class Primers():
         self.primerMinGC = 50
         self.primerMaxGC = 60
 
-    def checkInput(self):
-        """ Checks the input sequence.
-            Removes every character that's NOT in CATG
-            Raises ValueError if condition is (not) met"""
-
-        self.sequence = re.sub(r'[^CATG]', '', self.sequence.upper())
-        if not(20 <= len(self.sequence) <= 500):
-            raise ValueError("Sequentie moet tussen 20 en 500 lang zijn. "
-                             "Sequentie is nu {}: {:d} teken(s) lang."
-                             .format(self.sequence, len(self.sequence)))
-        return self.sequence
-
 
 """ BELOW FOR TESTING PURPOSES ONLY """
 # ask = input('seq? ')
@@ -36,11 +26,22 @@ AAAACGATAAAGTGCGATCAGTAATTCAAAACCTTACAGAAGAGCAATCTATGGTTTTGTGCGCAGCCCT
 TAATGAAGGCAGGAAGTATGTGGTTACATCAAAACAATTCCCATACATTAGTGAGTTGATTGAGCTTGGT
 GTGTTGAACAAAACTTTTTCCCGATGGAATGGAAAGCATATATTATTCCCTATTGAGGATATTTACTGGA
 CTGAATTAGTTGCCAGCTATGATCCATATAATATTGAGATAAAGCCAAGGCCAATATCTAAGTAA"""
-_primer = Primers(sq)
-try:
-    # print(_primer.checkInput())
-    print('yo')
-except ValueError as e:
-    print(e)
+sq = Seq(sq, IUPAC.unambiguous_dna)
+mt = Seq(mt.strip(), IUPAC.unambiguous_dna)
 
-print(_primer.findPrimer(sq))
+sequenceInput = ''
+
+while not sequenceInput:
+    sequenceInput = raw_input("Wat is de sequentie? ").upper()
+    sequenceInput = Seq(sequenceInput, IUPAC.unambiguous_dna)
+
+    _primer = Primers(sequenceInput)
+
+    try:
+        if not _verify_alphabet(sequenceInput):
+            raise ValueError("De input mag alleen uit A, T, C of G bestaan.")
+    except ValueError as e:
+        print(e)
+        sequenceInput = ''
+
+print(GC(sequenceInput))
