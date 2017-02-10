@@ -1,11 +1,12 @@
 from Bio.Seq import Seq
-from Bio.SeqUtils import GC
+from Bio.SeqUtils import GC, MeltingTemp
 from Bio.Alphabet import IUPAC, _verify_alphabet
 
 
 class Primers():
     def __init__(self, sequence):
         self.sequence = sequence
+        self.sequenceRevComp = self.sequence.reverse_complement()
 
         self.primerMinLength = 17
         self.primerMaxLength = 25
@@ -14,21 +15,20 @@ class Primers():
         self.primerMinGC = 50
         self.primerMaxGC = 60
 
+    def calculateGC(primer):
+        """ Move to createPrimerList """
+        return GC(primer)
+
+    def calculateMeltingTemp(primer):
+        """ Move to createPrimerList """
+        return MeltingTemp.Tm_Wallace(primer)
+
+    def checkInput(self):
+        if not _verify_alphabet(self.sequence):
+            raise ValueError("De input mag alleen uit A, T, C of G bestaan.")
+
 
 """ BELOW FOR TESTING PURPOSES ONLY """
-# ask = input('seq? ')
-sq = "CCCTAAGTTTGATGAGTATAGAAATGGATCC"
-mt = """TTGATGAGTATAGAAATGGATCCACTCGTTATTCTCGGACGAGTGTTCAGTAATGAACCTCTGGAGAGAA
-CCATGTATATGATCGTTATCTGGGTTGGACTTCTGCTTTTAAGCCCAGATAACTGGCCTGAATATGTTAA
-TGAGAGAATCGGTATTCCTCATGTGTGGCATGTTTTCGTCTTTGCTCTTGCATTTTCGCTAGCAATTAAT
-GTGCATCGATTATCAGCTATTGCCAGCGCCAGATATAAGCGATTTAAGCTAAGAAAACGCATTAAGATGC
-AAAACGATAAAGTGCGATCAGTAATTCAAAACCTTACAGAAGAGCAATCTATGGTTTTGTGCGCAGCCCT
-TAATGAAGGCAGGAAGTATGTGGTTACATCAAAACAATTCCCATACATTAGTGAGTTGATTGAGCTTGGT
-GTGTTGAACAAAACTTTTTCCCGATGGAATGGAAAGCATATATTATTCCCTATTGAGGATATTTACTGGA
-CTGAATTAGTTGCCAGCTATGATCCATATAATATTGAGATAAAGCCAAGGCCAATATCTAAGTAA"""
-sq = Seq(sq, IUPAC.unambiguous_dna)
-mt = Seq(mt.strip(), IUPAC.unambiguous_dna)
-
 sequenceInput = ''
 
 while not sequenceInput:
@@ -38,10 +38,11 @@ while not sequenceInput:
     _primer = Primers(sequenceInput)
 
     try:
-        if not _verify_alphabet(sequenceInput):
-            raise ValueError("De input mag alleen uit A, T, C of G bestaan.")
+        _primer.checkInput()
     except ValueError as e:
         print(e)
         sequenceInput = ''
 
+print(_primer.sequence)
 print(GC(sequenceInput))
+print(MeltingTemp.Tm_Wallace(sequenceInput))
