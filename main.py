@@ -27,6 +27,22 @@ class Primers():
         if not _verify_alphabet(self.sequence):
             raise ValueError("De input mag alleen uit A, T, C of G bestaan.")
 
+    def selectAnnealingArea(self, sequence, positionStart, positionEnd):
+        """ Selects the annealing area and splits the sequence in 3 parts
+            Annealingarea, 5end and 3 end
+        Args:
+            sequence (str) -- sequence to select annealing area on (revComp)DNA
+            positionStart (int) -- start position of annealing area
+            positionEnd (int) -- end position of annealing area
+        Return: (tuple)
+            sequence5end (str) -- first part of sequence - for finding primers
+            sequence3end (str) -- last part of sequence - for finding primers
+        """
+        sequence5end = sequence[:positionStart]
+        sequence3end = sequence[positionEnd:]
+        sequenceAnnealingArea = sequence[positionStart:positionEnd]
+        return sequence5end, sequence3end, sequenceAnnealingArea
+
 
 """ BELOW FOR TESTING PURPOSES ONLY """
 sequenceInput = ''
@@ -46,3 +62,5 @@ while not sequenceInput:
 print(_primer.sequence)
 print(GC(sequenceInput))
 print(MeltingTemp.Tm_Wallace(sequenceInput))
+print(sequenceInput)
+print(_primer.selectAnnealingArea(sequenceInput, 30, 60))
