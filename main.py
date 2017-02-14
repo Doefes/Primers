@@ -6,7 +6,6 @@ from Bio.Alphabet import IUPAC, _verify_alphabet
 class Primers():
     def __init__(self, sequence):
         self.sequence = sequence
-        self.sequenceRevComp = self.sequence.reverse_complement()
 
         self.primerMinLength = 17
         self.primerMaxLength = 25
@@ -38,10 +37,37 @@ class Primers():
             sequence5end (str) -- first part of sequence - for finding primers
             sequence3end (str) -- last part of sequence - for finding primers
         """
-        sequence5end = sequence[:positionStart]
+        sequence5end = sequence[:positionStart + self.primerMaxLength]
         sequence3end = sequence[positionEnd:]
         sequenceAnnealingArea = sequence[positionStart:positionEnd]
         return sequence5end, sequence3end, sequenceAnnealingArea
+
+    def findPrimers(self, sequence):
+        """ Finds all primers based on length, GC content and melting Temp
+        Args:
+            sequence (str) -- 5'to'3 sequence
+        Return:
+            primers (list) -- list contains [primer sequence, melting temp, GC]
+        """
+        primers = []
+
+        for primerLength in range(self.primerMaxLength,
+                                  self.primerMinLength-1,
+                                  -1):
+            """ Outer loop: loops through primer lengths.
+                Decrements from 25 to 17 """
+
+            for x in range(len(sequence)-primerLength):
+                """ Inner loop: loops through sequence.
+                    Increments position each iteration with 1 """
+                possiblePrimer = sequence[0+x:primerLength+x]
+                if 55 <= MeltingTemp.Tm_Wallace(possiblePrimer) <= 65:
+                    if 50 <= GC(possiblePrimer) <= 60:
+                        primers.append([possiblePrimer,
+                                        MeltingTemp.Tm_Wallace(possiblePrimer),
+                                        GC(possiblePrimer), primerLength])
+            sequence = sequence[:-1]
+        return primers
 
 
 """ BELOW FOR TESTING PURPOSES ONLY """
@@ -58,6 +84,7 @@ while not sequenceInput:
     except ValueError as e:
         print(e)
         sequenceInput = ''
+
 
 print(_primer.sequence)
 print(GC(sequenceInput))
