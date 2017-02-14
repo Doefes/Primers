@@ -14,14 +14,6 @@ class Primers():
         self.primerMinGC = 50
         self.primerMaxGC = 60
 
-    def calculateGC(primer):
-        """ Move to createPrimerList """
-        return GC(primer)
-
-    def calculateMeltingTemp(primer):
-        """ Move to createPrimerList """
-        return MeltingTemp.Tm_Wallace(primer)
-
     def checkInput(self):
         if not _verify_alphabet(self.sequence):
             raise ValueError("De input mag alleen uit A, T, C of G bestaan.")
@@ -61,8 +53,13 @@ class Primers():
                 """ Inner loop: loops through sequence.
                     Increments position each iteration with 1 """
                 possiblePrimer = sequence[0+x:primerLength+x]
-                if 55 <= MeltingTemp.Tm_Wallace(possiblePrimer) <= 65:
-                    if 50 <= GC(possiblePrimer) <= 60:
+                if self.primerMinMeltTemp\
+                        <= MeltingTemp.Tm_Wallace(possiblePrimer)\
+                        <= self.primerMaxMeltTemp:
+
+                    if self.primerMinGC <= GC(possiblePrimer)\
+                            <= self.primerMaxGC:
+
                         primers.append([possiblePrimer,
                                         MeltingTemp.Tm_Wallace(possiblePrimer),
                                         GC(possiblePrimer), primerLength])
