@@ -4,15 +4,17 @@ from Bio.Alphabet import IUPAC, _verify_alphabet
 
 
 class Primers():
-    def __init__(self, sequence):
-        self.sequence = sequence
-
+    def __init__(self):
         self.primerMinLength = 17
         self.primerMaxLength = 25
         self.primerMinMeltTemp = 55
         self.primerMaxMeltTemp = 60
         self.primerMinGC = 50
         self.primerMaxGC = 60
+
+    def setSequence(self, sequence):
+        sequence = sequence.replace("\n", "")
+        self.sequence = Seq(sequence.upper(), IUPAC.unambiguous_dna)
 
     def checkInput(self):
         if not _verify_alphabet(self.sequence):
@@ -67,24 +69,25 @@ class Primers():
         return primers
 
 
-""" BELOW FOR TESTING PURPOSES ONLY """
-sequenceInput = ''
-
-while not sequenceInput:
-    sequenceInput = raw_input("Wat is de sequentie? ").upper()
-    sequenceInput = Seq(sequenceInput, IUPAC.unambiguous_dna)
-
-    _primer = Primers(sequenceInput)
-
-    try:
-        _primer.checkInput()
-    except ValueError as e:
-        print(e)
-        sequenceInput = ''
-
-
-print(_primer.sequence)
-print(GC(sequenceInput))
-print(MeltingTemp.Tm_Wallace(sequenceInput))
-print(sequenceInput)
-print(_primer.selectAnnealingArea(sequenceInput, 30, 60))
+# """ BELOW FOR TESTING PURPOSES ONLY """
+# sequenceInput = ''
+#
+# while not sequenceInput:
+#     sequenceInput = raw_input("Wat is de sequentie? ").upper()
+#     sequenceInput = Seq(sequenceInput, IUPAC.unambiguous_dna)
+#
+#     _primer = Primers()
+#     _primer.setSequence(sequenceInput)
+#
+#     try:
+#         _primer.checkInput()
+#     except ValueError as e:
+#         print(e)
+#         sequenceInput = ''
+#
+#
+# print(_primer.sequence)
+# print(GC(sequenceInput))
+# print(MeltingTemp.Tm_Wallace(sequenceInput))
+# print(sequenceInput)
+# print(_primer.selectAnnealingArea(sequenceInput, 30, 60))

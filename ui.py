@@ -1,4 +1,5 @@
 import wx
+from primers import Primers
 
 
 class primerUI(wx.Frame):
@@ -7,7 +8,7 @@ class primerUI(wx.Frame):
 
         self.panel = wx.Panel(self)
         self.Center()
-        self.button = wx.Button(self.panel, label="Save")
+        self.button = wx.Button(self.panel, label="Find primers")
         self.pcrLabel = wx.StaticText(self.panel, label="PCR Size: ")
         self.pcrSizeField = wx.SpinCtrl(self.panel,
                                         -1,
@@ -43,10 +44,16 @@ class primerUI(wx.Frame):
         self.SetSizerAndFit(self.windowSizer)
 
         # Set event handlers
-        self.button.Bind(wx.EVT_BUTTON, self.OnButton)
+        self.button.Bind(wx.EVT_BUTTON, self.findPrimersButton)
+        self._primer = Primers()
 
-    def OnButton(self, e):
-        self.errorMessage.SetLabel("Error")
+    def findPrimersButton(self, e):
+        self._primer.setSequence(self.sequenceField.GetValue())
+        try:
+            self._primer.checkInput()
+            self.errorMessage.SetLabel('')
+        except ValueError as e:
+            self.errorMessage.SetLabel(str(e))
 
 
 app = wx.App(False)
