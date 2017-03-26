@@ -8,7 +8,8 @@ class primerUI(wx.Frame):
 
         self.panel = wx.Panel(self)
         self.Center()
-        self.button = wx.Button(self.panel, label="Find primers")
+        self.getSelectionButton = wx.Button(self.panel, label="Set Annealing area")
+        self.findPrimersButton = wx.Button(self.panel, label="Find primers")
         self.pcrLabel = wx.StaticText(self.panel, label="PCR Size: ")
         self.pcrSizeField = wx.SpinCtrl(self.panel,
                                         -1,
@@ -30,10 +31,11 @@ class primerUI(wx.Frame):
         self.sizer = wx.GridBagSizer(5, 5)
         self.sizer.Add(self.pcrLabel, (0, 0))
         self.sizer.Add(self.pcrSizeField, (0, 1))
-        self.sizer.Add(self.sequenceLabel, (1, 0))
-        self.sizer.Add(self.sequenceField, (1, 1))
-        self.sizer.Add(self.errorMessage, (2, 1), (1, 2), flag=wx.EXPAND)
-        self.sizer.Add(self.button, (3, 1), (1, 2), flag=wx.EXPAND)
+        self.sizer.Add(self.errorMessage, (1, 1), (1, 2), flag=wx.EXPAND)
+        self.sizer.Add(self.sequenceLabel, (2, 0))
+        self.sizer.Add(self.sequenceField, (2, 1), (1, 4))
+        self.sizer.Add(self.getSelectionButton, (3, 1), (1, 2), flag=wx.EXPAND)
+        self.sizer.Add(self.findPrimersButton, (3, 3), (1, 2), flag=wx.EXPAND)
 
         # Set simple sizer for a nice border
         self.border = wx.BoxSizer()
@@ -44,10 +46,20 @@ class primerUI(wx.Frame):
         self.SetSizerAndFit(self.windowSizer)
 
         # Set event handlers
-        self.button.Bind(wx.EVT_BUTTON, self.findPrimersButton)
+        self.getSelectionButton.Bind(wx.EVT_BUTTON, self.getSelection)
+        self.findPrimersButton.Bind(wx.EVT_BUTTON, self.findPrimers)
         self._primer = Primers()
 
-    def findPrimersButton(self, e):
+    def findPrimers(self, e):
+        if not self._primer.sequence:
+            self.__setSequence()
+
+    def getSelection(self, e):
+        if not self._primer.sequence:
+            self.__setSequence()
+        self.selection = self.sequenceField.GetSelection()
+        
+    def __setSequence(self):
         self._primer.setSequence(self.sequenceField.GetValue())
         try:
             self._primer.checkInput()
