@@ -8,7 +8,7 @@ class primerUI(wx.Frame):
 
         self.panel = wx.Panel(self)
         self.Center()
-        self.getSelectionButton = wx.Button(self.panel, label="Set Annealing area")
+        self.getSelectionButton = wx.Button(self.panel, label="Set Annealing")
         self.findPrimersButton = wx.Button(self.panel, label="Find primers")
         self.pcrLabel = wx.StaticText(self.panel, label="PCR Size: ")
         self.pcrSizeField = wx.SpinCtrl(self.panel,
@@ -19,7 +19,7 @@ class primerUI(wx.Frame):
         self.sequenceLabel = wx.StaticText(self.panel, label="Sequence:")
         self.sequenceField = wx.TextCtrl(self.panel,
                                          size=(400, 100),
-                                         style=wx.TE_MULTILINE)
+                                         style=wx.TE_MULTILINE | wx.TE_RICH)
         self.errorMessage = wx.StaticText(self.panel)
         self.errorMessage.SetForegroundColour(wx.RED)
 
@@ -58,7 +58,17 @@ class primerUI(wx.Frame):
         if not self._primer.sequence:
             self.__setSequence()
         self.selection = self.sequenceField.GetSelection()
-        
+        self.sequenceField.SetForegroundColour(wx.BLACK)
+        self.sequenceField.SetStyle(0,
+                                    len(self._primer.sequence),
+                                    wx.TextAttr("black"))
+        self.sequenceField.SetStyle(0,
+                                    self.selection[0],
+                                    wx.TextAttr("red"))
+        self.sequenceField.SetStyle(self.selection[1],
+                                    len(self._primer.sequence),
+                                    wx.TextAttr("red"))
+
     def __setSequence(self):
         self._primer.setSequence(self.sequenceField.GetValue())
         try:
