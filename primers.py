@@ -11,6 +11,7 @@ class Primers():
         self.primerMaxMeltTemp = 60
         self.primerMinGC = 50
         self.primerMaxGC = 60
+        self.sequence = ''
 
     def setSequence(self, sequence):
         sequence = sequence.replace("\n", "")
