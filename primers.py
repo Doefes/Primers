@@ -11,14 +11,17 @@ class Primers():
         self.primerMaxMeltTemp = 60
         self.primerMinGC = 50
         self.primerMaxGC = 60
-        self.sequence = ''
+        self.__sequence = ''
+
+    def getSequence(self):
+        return self.__sequence
 
     def setSequence(self, sequence):
         sequence = sequence.replace("\n", "")
-        self.sequence = Seq(sequence.upper(), IUPAC.unambiguous_dna)
+        self.__sequence = Seq(sequence.upper(), IUPAC.unambiguous_dna)
 
     def checkInput(self):
-        if not _verify_alphabet(self.sequence):
+        if not _verify_alphabet(self.__sequence):
             raise ValueError("De input mag alleen uit A, T, C of G bestaan.")
 
     def selectAnnealingArea(self, sequence, positionStart, positionEnd):
@@ -70,24 +73,23 @@ class Primers():
         return primers
 
 
-# """ BELOW FOR TESTING PURPOSES ONLY """
-# sequenceInput = ''
-#
-# while not sequenceInput:
-#     sequenceInput = raw_input("Wat is de sequentie? ").upper()
-#     sequenceInput = Seq(sequenceInput, IUPAC.unambiguous_dna)
-#
-#     _primer = Primers()
-#     _primer.setSequence(sequenceInput)
-#
-#     try:
-#         _primer.checkInput()
-#     except ValueError as e:
-#         print(e)
-#         sequenceInput = ''
-#
-#
-# print(_primer.sequence)
+""" BELOW FOR TESTING PURPOSES ONLY """
+sequenceInput = ''
+
+while not sequenceInput:
+    sequenceInput = raw_input("Wat is de sequentie? ").upper()
+
+    _primer = Primers()
+    _primer.setSequence(sequenceInput)
+
+    try:
+        _primer.checkInput()
+    except ValueError as e:
+        print(e)
+        sequenceInput = ''
+
+
+print(_primer.getSequence())
 # print(GC(sequenceInput))
 # print(MeltingTemp.Tm_Wallace(sequenceInput))
 # print(sequenceInput)
