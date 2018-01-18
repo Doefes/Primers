@@ -58,13 +58,13 @@ class primerUI(wx.Frame):
         self.selection = self.sequenceField.GetSelection()
         self.sequenceField.SetForegroundColour(wx.BLACK)
         self.sequenceField.SetStyle(0,
-                                    len(self._primer.sequence),
+                                    len(self._primer.getSequence()),
                                     wx.TextAttr("black"))
         self.sequenceField.SetStyle(0,
                                     self.selection[0],
                                     wx.TextAttr("red"))
         self.sequenceField.SetStyle(self.selection[1],
-                                    len(self._primer.sequence),
+                                    len(self._primer.getSequence()),
                                     wx.TextAttr("red"))
 
     def __checkSequence(self):
