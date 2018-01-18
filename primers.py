@@ -74,19 +74,19 @@ class Primers():
 
 
 """ BELOW FOR TESTING PURPOSES ONLY """
-sequenceInput = ''
+sequenceInput = 'TTCGGGGCCATTGTTTCTCTGTGGAGGAGTCCATGACGAAAGATGAACTGATTGCCCGTCTCCGCTCGCTGGGTGAACAACTGAACCGTGATGTCAGCCTGACGGGGACGAAAGAAGAACTGGCGCTCCGTGTGGCAGAGCTGAAAGAGGAGCTTGATGACACGGATGAAACTGCCGGTCAGGACACCCCTCTCAGCCGGGAAAATGTGCTGACCGGACATGAAAATGAGGTGGGATCAGCGCAGCCGGATACCGTGATTCTGGATACGTCTGAACTGGTCACGGTCGTGGCACTGGTGAAGCTGCATACTGATGCACTTCACGCCACGCGGGATGAACCTGTGGCATTTGTGCTGCCGGGAACGGCGTTTCGTGTCTCTGCCGGTGTGGCAGCCGAAATGACAGAGCGCGGCCTGGCCAGAATGCAATAACGGGAGGCGCTGTGGCTGATTTCGATAACCTGTTCGATGCTGCCATTG'
 
 while not sequenceInput:
     sequenceInput = raw_input("Wat is de sequentie? ").upper()
 
-    _primer = Primers()
-    _primer.setSequence(sequenceInput)
+_primer = Primers()
+_primer.setSequence(sequenceInput)
 
-    try:
-        _primer.checkInput()
-    except ValueError as e:
-        print(e)
-        sequenceInput = ''
+try:
+    _primer.checkInput()
+except ValueError as e:
+    print(e)
+    sequenceInput = ''
 
 
 print(_primer.getSequence())
@@ -94,3 +94,5 @@ print(_primer.getSequence())
 # print(MeltingTemp.Tm_Wallace(sequenceInput))
 # print(sequenceInput)
 # print(_primer.selectAnnealingArea(sequenceInput, 30, 60))
+for x in _primer.findPrimers(sequenceInput):
+    print(x)
