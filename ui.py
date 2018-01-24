@@ -10,6 +10,12 @@ class primerUI(wx.Frame):
         self.Center()
         self.getSelectionButton = wx.Button(self.panel, label="Set Annealing")
         self.findPrimersButton = wx.Button(self.panel, label="Find primers")
+        self.pcrStartLabel = wx.StaticText(self.panel, label="start position: ")
+        self.pcrEndLabel = wx.StaticText(self.panel, label="end position: ")
+        self.pcrStartInput = wx.TextCtrl(self.panel,
+                                         style=wx.TE_RICH)
+        self.pcrEndInput = wx.TextCtrl(self.panel,
+                                         style=wx.TE_RICH)
         self.pcrLabel = wx.StaticText(self.panel, label="PCR Size: ")
         self.pcrSizeField = wx.SpinCtrl(self.panel,
                                         -1,
@@ -36,6 +42,10 @@ class primerUI(wx.Frame):
         self.sizer.Add(self.sequenceField, (2, 1), (1, 4))
         self.sizer.Add(self.getSelectionButton, (3, 1), (1, 2), flag=wx.EXPAND)
         self.sizer.Add(self.findPrimersButton, (3, 3), (1, 2), flag=wx.EXPAND)
+        self.sizer.Add(self.pcrStartLabel, (4, 1))
+        self.sizer.Add(self.pcrStartInput, (4, 2))
+        self.sizer.Add(self.pcrEndLabel, (4, 3))
+        self.sizer.Add(self.pcrEndInput, (4, 4))
 
         # Set simple sizer for a nice border
         self.border = wx.BoxSizer()
@@ -66,6 +76,10 @@ class primerUI(wx.Frame):
         self.sequenceField.SetStyle(self.selection[1],
                                     len(self._primer.getSequence()),
                                     wx.TextAttr("red"))
+        print(self.selection[0])
+        print(self.selection[1])
+        self.pcrStartInput.SetValue(str(self.selection[0]))
+        self.pcrEndInput.SetValue(str(self.selection[1]))
 
     def __checkSequence(self):
         self._primer.setSequence(self.sequenceField.GetValue())
