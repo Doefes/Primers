@@ -10,18 +10,12 @@ class primerUI(wx.Frame):
         self.Center()
         self.getSelectionButton = wx.Button(self.panel, label="Set Annealing")
         self.findPrimersButton = wx.Button(self.panel, label="Find primers")
-        self.pcrStartLabel = wx.StaticText(self.panel, label="start position: ")
-        self.pcrEndLabel = wx.StaticText(self.panel, label="end position: ")
+        self.pcrStartLabel = wx.StaticText(self.panel, label="PCR product start: ")
+        self.pcrEndLabel = wx.StaticText(self.panel, label="PCR product end: ")
         self.pcrStartInput = wx.TextCtrl(self.panel,
                                          style=wx.TE_RICH)
         self.pcrEndInput = wx.TextCtrl(self.panel,
                                          style=wx.TE_RICH)
-        self.pcrLabel = wx.StaticText(self.panel, label="PCR Size: ")
-        self.pcrSizeField = wx.SpinCtrl(self.panel,
-                                        -1,
-                                        '300',
-                                        min=200,
-                                        max=500)
         self.sequenceLabel = wx.StaticText(self.panel, label="Sequence:")
         self.sequenceField = wx.TextCtrl(self.panel,
                                          size=(400, 100),
@@ -35,17 +29,15 @@ class primerUI(wx.Frame):
 
         # Set sizer for the panel content
         self.sizer = wx.GridBagSizer(5, 5)
-        self.sizer.Add(self.pcrLabel, (0, 0))
-        self.sizer.Add(self.pcrSizeField, (0, 1))
-        self.sizer.Add(self.errorMessage, (1, 1), (1, 2), flag=wx.EXPAND)
-        self.sizer.Add(self.sequenceLabel, (2, 0))
-        self.sizer.Add(self.sequenceField, (2, 1), (1, 4))
-        self.sizer.Add(self.getSelectionButton, (3, 1), (1, 2), flag=wx.EXPAND)
-        self.sizer.Add(self.findPrimersButton, (3, 3), (1, 2), flag=wx.EXPAND)
-        self.sizer.Add(self.pcrStartLabel, (4, 1))
-        self.sizer.Add(self.pcrStartInput, (4, 2))
-        self.sizer.Add(self.pcrEndLabel, (4, 3))
-        self.sizer.Add(self.pcrEndInput, (4, 4))
+        self.sizer.Add(self.errorMessage, (0, 1), (1, 2), flag=wx.EXPAND)
+        self.sizer.Add(self.sequenceLabel, (1, 0))
+        self.sizer.Add(self.sequenceField, (1, 1), (1, 4), flag=wx.EXPAND)
+        self.sizer.Add(self.getSelectionButton, (2, 1), (1, 2), flag=wx.EXPAND)
+        self.sizer.Add(self.findPrimersButton, (2, 3), (1, 2), flag=wx.EXPAND)
+        self.sizer.Add(self.pcrStartLabel, (3, 1))
+        self.sizer.Add(self.pcrStartInput, (3, 2))
+        self.sizer.Add(self.pcrEndLabel, (3, 3))
+        self.sizer.Add(self.pcrEndInput, (3, 4))
 
         # Set simple sizer for a nice border
         self.border = wx.BoxSizer()
