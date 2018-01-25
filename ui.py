@@ -31,12 +31,12 @@ class primerUI(wx.Frame):
 
         self.primerFwdLabel = wx.StaticText(self.panel, label="F-primer:")
         self.primerFwdField = wx.TextCtrl(self.panel,
-                                         size=(400, 100),
+                                         size=(500, 200),
                                          style=wx.TE_MULTILINE |
                                                wx.TE_READONLY | wx.TE_RICH)
         self.primerRevLabel = wx.StaticText(self.panel, label="R-primer:")
         self.primerRevField = wx.TextCtrl(self.panel,
-                                         size=(400, 100),
+                                         size=(500, 200),
                                          style=wx.TE_MULTILINE |
                                                wx.TE_READONLY | wx.TE_RICH)
 
@@ -58,11 +58,11 @@ class primerUI(wx.Frame):
         self.sizer.Add(self.pcrEndLabel, (4, 3))
         self.sizer.Add(self.pcrEndInput, (4, 4))
 
-        self.sizer2 = wx.GridBagSizer(5, 5)
-        self.sizer2.Add(self.primerFwdLabel, (2, 0))
-        self.sizer2.Add(self.primerFwdField, (2, 1), (1, 4), flag=wx.EXPAND)
-        self.sizer2.Add(self.primerRevLabel, (3, 0))
-        self.sizer2.Add(self.primerRevField, (3, 1), (1, 4), flag=wx.EXPAND)
+        self.sizer2 = wx.GridBagSizer(2, 5)
+        self.sizer2.Add(self.primerFwdLabel, (1, 0))
+        self.sizer2.Add(self.primerFwdField, (1, 1), (1, 4), flag=wx.EXPAND)
+        self.sizer2.Add(self.primerRevLabel, (2, 0))
+        self.sizer2.Add(self.primerRevField, (2, 1), (1, 4), flag=wx.EXPAND)
 
         # Set simple sizer for a nice border
         self.border = wx.BoxSizer(wx.VERTICAL)
@@ -81,12 +81,15 @@ class primerUI(wx.Frame):
     def findPrimers(self, e):
         self.__checkSequence()
         for primer in self._primer.findPrimers(self.seq5end):
-            text = str(primer[0]) + " TM:" + str(primer[1]) + " GC:" +\
-                   str(primer[2])[:5] + " Size:" + str(primer[3]) + "\n"
+            text = str(primer[0]) + "\tTM:" + str(primer[1]) + "\tGC:" +\
+                   str(primer[2])[:5] + "\tSize:" + str(primer[3]) +\
+                   "\tPos:" + str(primer[4]) + "\n"
             self.primerFwdField.AppendText(text)
         for primer in self._primer.findPrimers(self.seq3end):
-            text = str(primer[0]) + " TM:" + str(primer[1]) + " GC:" +\
-                   str(primer[2])[:5] + " Size:" + str(primer[3]) + "\n"
+            pos = primer[4] + self.selection[1]
+            text = str(primer[0]) + "\tTM:" + str(primer[1]) + "\tGC:" +\
+                   str(primer[2])[:5] + "\tSize:" + str(primer[3]) +\
+                   "\tPos:" + str(pos) + "\n"
             self.primerRevField.AppendText(text)
 
     def getSelection(self, e):
