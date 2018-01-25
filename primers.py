@@ -47,6 +47,8 @@ class Primers():
         Return:
             primers (list) -- list contains [primer sequence, melting temp, GC]
         """
+        print("\n" + sequence)
+        print("\n" + sequence.complement())
         primers = []
 
         for primerLength in range(self.primerMaxLength,
@@ -68,31 +70,6 @@ class Primers():
 
                         primers.append([possiblePrimer,
                                         MeltingTemp.Tm_Wallace(possiblePrimer),
-                                        GC(possiblePrimer), primerLength])
+                                        GC(possiblePrimer), primerLength, x])
             sequence = sequence[:-1]
         return primers
-
-
-""" BELOW FOR TESTING PURPOSES ONLY """
-sequenceInput = 'TTCGGGGCCATTGTTTCTCTGTGGAGGAGTCCATGACGAAAGATGAACTGATTGCCCGTCTCCGCTCGCTGGGTGAACAACTGAACCGTGATGTCAGCCTGACGGGGACGAAAGAAGAACTGGCGCTCCGTGTGGCAGAGCTGAAAGAGGAGCTTGATGACACGGATGAAACTGCCGGTCAGGACACCCCTCTCAGCCGGGAAAATGTGCTGACCGGACATGAAAATGAGGTGGGATCAGCGCAGCCGGATACCGTGATTCTGGATACGTCTGAACTGGTCACGGTCGTGGCACTGGTGAAGCTGCATACTGATGCACTTCACGCCACGCGGGATGAACCTGTGGCATTTGTGCTGCCGGGAACGGCGTTTCGTGTCTCTGCCGGTGTGGCAGCCGAAATGACAGAGCGCGGCCTGGCCAGAATGCAATAACGGGAGGCGCTGTGGCTGATTTCGATAACCTGTTCGATGCTGCCATTG'
-
-while not sequenceInput:
-    sequenceInput = raw_input("Wat is de sequentie? ").upper()
-
-_primer = Primers()
-_primer.setSequence(sequenceInput)
-
-try:
-    _primer.checkInput()
-except ValueError as e:
-    print(e)
-    sequenceInput = ''
-
-
-print(_primer.getSequence())
-# print(GC(sequenceInput))
-# print(MeltingTemp.Tm_Wallace(sequenceInput))
-# print(sequenceInput)
-# print(_primer.selectAnnealingArea(sequenceInput, 30, 60))
-for x in _primer.findPrimers(sequenceInput):
-    print(x)
