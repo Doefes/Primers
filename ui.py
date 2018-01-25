@@ -32,11 +32,13 @@ class primerUI(wx.Frame):
         self.primerFwdLabel = wx.StaticText(self.panel, label="F-primer:")
         self.primerFwdField = wx.TextCtrl(self.panel,
                                          size=(400, 100),
-                                         style=wx.TE_MULTILINE | wx.TE_RICH)
+                                         style=wx.TE_MULTILINE |
+                                               wx.TE_READONLY | wx.TE_RICH)
         self.primerRevLabel = wx.StaticText(self.panel, label="R-primer:")
         self.primerRevField = wx.TextCtrl(self.panel,
                                          size=(400, 100),
-                                         style=wx.TE_MULTILINE | wx.TE_RICH)
+                                         style=wx.TE_MULTILINE |
+                                               wx.TE_READONLY | wx.TE_RICH)
 
         # Set sizer for the frame,so wes can change frame size to match widgets
         self.windowSizer = wx.BoxSizer()
@@ -63,7 +65,7 @@ class primerUI(wx.Frame):
         self.sizer2.Add(self.primerRevField, (3, 1), (1, 4), flag=wx.EXPAND)
 
         # Set simple sizer for a nice border
-        self.border = wx.BoxSizer()
+        self.border = wx.BoxSizer(wx.VERTICAL)
         self.border.Add(self.sizer, 1, wx.ALL | wx.EXPAND, 5)
         self.border.Add(self.sizer2, 1,  wx.EXPAND, 5)
 
@@ -78,6 +80,14 @@ class primerUI(wx.Frame):
 
     def findPrimers(self, e):
         self.__checkSequence()
+        for primer in self._primer.findPrimers(self.seq5end):
+            text = str(primer[0]) + " TM:" + str(primer[1]) + " GC:" +\
+                   str(primer[2])[:5] + " Size:" + str(primer[3]) + "\n"
+            self.primerFwdField.AppendText(text)
+        for primer in self._primer.findPrimers(self.seq3end):
+            text = str(primer[0]) + " TM:" + str(primer[1]) + " GC:" +\
+                   str(primer[2])[:5] + " Size:" + str(primer[3]) + "\n"
+            self.primerRevField.AppendText(text)
 
     def getSelection(self, e):
         self.__checkSequence()
@@ -92,8 +102,8 @@ class primerUI(wx.Frame):
         self.sequenceField.SetStyle(self.selection[1],
                                     len(self._primer.getSequence()),
                                     wx.TextAttr("red"))
-        print(self.selection[0])
-        print(self.selection[1])
+        self.seq5end = self._primer.getSequence()[0:self.selection[0]]
+        self.seq3end = self._primer.getSequence()[self.selection[1]:]
         self.pcrStartInput.SetValue(str(self.selection[0]))
         self.pcrEndInput.SetValue(str(self.selection[1]))
 
