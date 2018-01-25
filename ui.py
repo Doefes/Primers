@@ -29,6 +29,15 @@ class primerUI(wx.Frame):
         self.errorMessage = wx.StaticText(self.panel)
         self.errorMessage.SetForegroundColour(wx.RED)
 
+        self.primerFwdLabel = wx.StaticText(self.panel, label="F-primer:")
+        self.primerFwdField = wx.TextCtrl(self.panel,
+                                         size=(400, 100),
+                                         style=wx.TE_MULTILINE | wx.TE_RICH)
+        self.primerRevLabel = wx.StaticText(self.panel, label="R-primer:")
+        self.primerRevField = wx.TextCtrl(self.panel,
+                                         size=(400, 100),
+                                         style=wx.TE_MULTILINE | wx.TE_RICH)
+
         # Set sizer for the frame,so wes can change frame size to match widgets
         self.windowSizer = wx.BoxSizer()
         self.windowSizer.Add(self.panel, 1, wx.ALL | wx.EXPAND)
@@ -39,7 +48,7 @@ class primerUI(wx.Frame):
         self.sizer.Add(self.pcrSizeField, (0, 1))
         self.sizer.Add(self.errorMessage, (1, 1), (1, 2), flag=wx.EXPAND)
         self.sizer.Add(self.sequenceLabel, (2, 0))
-        self.sizer.Add(self.sequenceField, (2, 1), (1, 4))
+        self.sizer.Add(self.sequenceField, (2, 1), (1, 4), flag=wx.EXPAND)
         self.sizer.Add(self.getSelectionButton, (3, 1), (1, 2), flag=wx.EXPAND)
         self.sizer.Add(self.findPrimersButton, (3, 3), (1, 2), flag=wx.EXPAND)
         self.sizer.Add(self.pcrStartLabel, (4, 1))
@@ -47,9 +56,16 @@ class primerUI(wx.Frame):
         self.sizer.Add(self.pcrEndLabel, (4, 3))
         self.sizer.Add(self.pcrEndInput, (4, 4))
 
+        self.sizer2 = wx.GridBagSizer(5, 5)
+        self.sizer2.Add(self.primerFwdLabel, (2, 0))
+        self.sizer2.Add(self.primerFwdField, (2, 1), (1, 4), flag=wx.EXPAND)
+        self.sizer2.Add(self.primerRevLabel, (3, 0))
+        self.sizer2.Add(self.primerRevField, (3, 1), (1, 4), flag=wx.EXPAND)
+
         # Set simple sizer for a nice border
         self.border = wx.BoxSizer()
         self.border.Add(self.sizer, 1, wx.ALL | wx.EXPAND, 5)
+        self.border.Add(self.sizer2, 1,  wx.EXPAND, 5)
 
         # Use the sizers
         self.panel.SetSizerAndFit(self.border)
